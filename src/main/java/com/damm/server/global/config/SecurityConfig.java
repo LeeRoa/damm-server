@@ -1,5 +1,8 @@
 package com.damm.server.global.config;
 
+import com.damm.server.global.auth.oauth2.CustomOAuth2UserService;
+import com.damm.server.global.auth.oauth2.OAuth2SuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,7 +13,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,7 +39,8 @@ public class SecurityConfig {
                                 "/docs",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-resources/**"
+                                "/swagger-resources/**",
+                                "/api/v1/auth/**"
                         ).permitAll()
 
                         // TODO 개발 초기 단계이므로 일단 모든 API 경로를 열어 두고 나중에 인증이 필요한 곳만 .authenticated()로 잠글 예정.
@@ -40,6 +48,12 @@ public class SecurityConfig {
 
                         // 그 외의 모든 요청은 인증 필요
                         .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 소셜 서버에서 받은 데이터를 우리가 만든 서비스로 전달
+                        )
+                        .successHandler(oAuth2SuccessHandler) // 로그인이 성공하면 이 핸들러를 실행
                 );
 
         return http.build();
