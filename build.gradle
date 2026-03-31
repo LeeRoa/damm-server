@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.damm'
+version = '0.0.1-SNAPSHOT'
+description = 'damm-server'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // [Core & Web]
+    // 웹 API 개발을 위한 핵심 스타터 (MVC, Jackson, Tomcat 포함)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // 입력값 검증 (유효성 체크)을 위한 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // 설정값(@ConfigurationProperties) 자동 완성을 위한 프로세서
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // [Database & Persistence]
+    // ORM을 위한 Spring Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // PostgreSQL 데이터베이스 드라이버
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // [Security]
+    // 인증 및 인가를 위한 Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // [Documentation]
+    // Swagger/OpenAPI를 이용한 API 문서 자동화
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    // [Lombok]
+    // 반복 코드(Getter, Setter 등) 자동 생성을 위한 도구
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // [Test]
+    // 스프링 부트 통합 테스트 (JUnit5, Mockito, AssertJ 등 포함)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // JUnit Platform 실행기
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
