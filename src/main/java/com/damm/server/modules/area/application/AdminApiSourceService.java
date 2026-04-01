@@ -16,7 +16,8 @@ public class AdminApiSourceService {
 
     public void register(ApiSourceRegisterRequest request) {
         ApiSource apiSource = ApiSource.builder()
-                .regionName(request.regionName())
+                .province(request.province())       // 예: "서울특별시"
+                .cityDistrict(request.cityDistrict()) // 예: "송파구"
                 .baseUrl(request.baseUrl())
                 .parserType(request.parserType())
                 .active(true)

@@ -19,7 +19,7 @@ import java.util.Optional;
 public class GwangjinParser implements PublicDataParser {
     @Override
     public boolean isSupport(ParserType parserType) {
-        return ParserType.GWANGJIN == parserType;
+        return ParserType.KOR_PUB_V2 == parserType;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class GwangjinParser implements PublicDataParser {
                 .queryParam("numOfRows", numOfRows)
                 .queryParam("id", Optional.empty())
                 .queryParam("type", "json")
-                .build()
+                .build(true)
                 .toUri();
     }
 

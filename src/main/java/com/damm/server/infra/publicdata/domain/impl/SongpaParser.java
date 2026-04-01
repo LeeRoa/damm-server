@@ -18,7 +18,7 @@ import java.util.List;
 public class SongpaParser implements PublicDataParser {
     @Override
     public boolean isSupport(ParserType parserType) {
-        return ParserType.SONGPA == parserType;
+        return ParserType.KOR_PUB_V1 == parserType;
     }
 
     @Override
@@ -53,7 +53,8 @@ public class SongpaParser implements PublicDataParser {
                     "송파구청",                               // 11. instNm
                     null,                                    // 12. latitude (지오코딩 보정 대상)
                     null,                                    // 13. longitude (지오코딩 보정 대상)
-                    null                                     // 14. fcltyKnd (이미지 경로 - 데이터 없음)
+                    null,                                     // 14. fcltyKnd (이미지 경로 - 데이터 없음)
+                    node.path("데이터기준일자").asText()       // 15. refDate
             ));
         }
 

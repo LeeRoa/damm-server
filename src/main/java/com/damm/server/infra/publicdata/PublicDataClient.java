@@ -40,7 +40,10 @@ public class PublicDataClient {
                 .orElseThrow(() -> new RuntimeException("지원하지 않는 파서 타입입니다."));
 
         URI finalUri = parser.createUri(source.getBaseUrl(), apiKey, pageNo, numOfRows);
-        log.info("[API 요청] 지역: {}, URI: {}", source.getRegionName(), finalUri);
+        log.info("[API 요청] 지역: {} {}, URI: {}",
+                source.getProvince().getKoreanName(),
+                source.getCityDistrict(),
+                finalUri);
 
         JsonNode responseNode = restApiUtil.get(
                 finalUri,

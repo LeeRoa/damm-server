@@ -22,6 +22,7 @@ public class SmokingAreaMapper {
         Address addressVo = Address.builder()
                 .ctprvnnm(item.ctprvnnm())
                 .signgunm(item.signgunm())
+                .emdnm(item.emdnm())
                 .rdnmadr(item.rdnmadr())
                 .lnmadr(item.lnmadr())
                 .build();
@@ -37,6 +38,7 @@ public class SmokingAreaMapper {
                 .instNm(item.instNm())
                 .areaSe(item.areaSe() != null ? AreaType.from(item.areaSe()) : AreaType.GENERAL)
                 .status(AreaStatus.VERIFIED)
+                .refDate(item.refDate())
                 .build();
     }
 

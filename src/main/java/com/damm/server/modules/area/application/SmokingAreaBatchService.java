@@ -49,11 +49,11 @@ public class SmokingAreaBatchService {
 
         for (ApiSource source : activeSources) {
             try {
-                log.debug("[{}] 지역의 데이터를 수집합니다. (URL: {})", source.getRegionName(), source.getBaseUrl());
+                log.debug("[{}] 지역의 데이터를 수집합니다. (URL: {})", source.getFullRegionName(), source.getBaseUrl());
                 syncSingleSource(source);
-                source.updateSyncTime(); // 동기화 성공 시각 업데이트
+                source.updateSyncTime();
             } catch (Exception e) {
-                log.error("[{}] 지역 동기화 중 오류가 발생했습니다: {}", source.getRegionName(), e.getMessage());
+                log.error("[{}] 지역 동기화 중 오류가 발생했습니다: {}", source.getFullRegionName(), e.getMessage());
             }
         }
 
@@ -72,7 +72,7 @@ public class SmokingAreaBatchService {
 
             if (response == null || response.items().isEmpty() || response.meta() == null) {
                 log.warn("[{}] 데이터가 없거나 응답이 올바르지 않아 해당 지역 수집을 중단합니다. (페이지: {})",
-                        source.getRegionName(), currentPage);
+                        source.getFullRegionName(), currentPage);
                 break;
             }
 
@@ -81,11 +81,11 @@ public class SmokingAreaBatchService {
                 int totalCount = response.meta().totalCount();
                 totalPages = (int) Math.ceil((double) totalCount / numOfRows);
                 log.info("[{}] 전체 데이터 {}건, 총 {}페이지 분량의 동기화를 진행합니다.",
-                        source.getRegionName(), totalCount, totalPages);
+                        source.getFullRegionName(), totalCount, totalPages);
             }
 
             log.info("[{}] {}페이지의 데이터 {}건을 처리합니다.",
-                    source.getRegionName(), currentPage, response.items().size());
+                    source.getFullRegionName(), currentPage, response.items().size());
             saveItems(response.items());
 
             currentPage++;
@@ -111,7 +111,7 @@ public class SmokingAreaBatchService {
                         // findById로 기존 데이터를 체크하고 update 혹은 save를 수행합니다.
                         areaWriter.saveOrUpdate(area);
                     } catch (Exception e) {
-                        log.error("데이터 저장 중 예외가 발생했습니다. (apiId: {}): {}", area.getId(), e.getMessage());
+                        log.error("데이터 저장 중 예외가 발생했습니다. (ID: {}): {}", area.getId(), e.getMessage());
                     }
                 });
     }

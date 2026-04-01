@@ -43,5 +43,8 @@ public record SmokingAreaItem(
         @JsonProperty("longitude") String longitude,
 
         // 시설 이미지
-        @JsonProperty("fclty_knd") String fcltyKnd
+        @JsonProperty("fclty_knd") String fcltyKnd,
+
+        // 데이터 기준일자
+        @JsonProperty("ref_date") String refDate
 ) {}

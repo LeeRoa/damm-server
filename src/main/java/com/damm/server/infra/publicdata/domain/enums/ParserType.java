@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ParserType {
-    GWANGJIN("광진구 스타일 - 혼합 배열형"),
-    SEODAEMUN("서대문구 스타일 - 객체 데이터형"),
-    SONGPA("송파구 스타일 - 한글 키값 객체형");
+    KOR_PUB_V1("공공데이터 포털 - 한글 키/주소 중심 (ex. 송파구)"),
+    KOR_PUB_V2("공공데이터 포털 - 영문 키/좌표 및 이미지 포함 (ex. 광진구)"),
+    SEOUL_OPEN_API("서울시 열린데이터 광장 전용 규격");
 
     private final String description;
 }
