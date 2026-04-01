@@ -36,7 +36,6 @@ public class SecurityConfig {
                 // 권한 규칙 설정
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
-                                "/docs",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
