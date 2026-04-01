@@ -61,10 +61,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // [Test]
-    // 스프링 부트 통합 테스트 (JUnit5, Mockito, AssertJ 등 포함)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    // JUnit Platform 실행기
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 }
 
 tasks.named('test') {

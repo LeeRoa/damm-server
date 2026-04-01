@@ -12,33 +12,57 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
 
-    @Column(length = 10)
-    private String zipCode;       // 우편번호 (예: 05006)
-
+    /**
+     * API 항목: rdnmadr (소재지 도로명주소)
+     */
     @Column(length = 200)
-    private String roadAddress;   // 도로명 주소 (예: 서울특별시 광진구 능동로 209)
+    private String rdnmadr;
 
+    /**
+     * API 항목: lnmadr (소재지 지번주소)
+     */
     @Column(length = 200)
-    private String lotAddress;    // 지번 주소 (예: 서울특별시 광진구 군자동 98)
+    private String lnmadr;
 
-    @Column(length = 100)
-    private String detailAddress; // 상세 주소 (예: 학생회관 1층 옥상)
+    /**
+     * API 항목: ctprvnnm (시도명)
+     */
+    @Column(length = 40)
+    private String ctprvnnm;
 
-    // DB 검색 및 필터링(예: "광진구"의 흡연실만 검색)을 위해 시/도, 시/군/구는 별도 컬럼으로 유지.
-    @Column(length = 20)
-    private String sido;          // 시/도 (예: 서울특별시)
+    /**
+     * API 항목: signgunm (시군구명)
+     */
+    @Column(length = 40)
+    private String signgunm;
 
-    @Column(length = 20)
-    private String sigungu;       // 시/군/구 (예: 광진구)
+    /**
+     * API 항목: emdnm (읍면동명)
+     */
+    @Column(length = 40)
+    private String emdnm;
 
     @Builder
-    public Address(String zipCode, String roadAddress, String lotAddress,
-                   String detailAddress, String sido, String sigungu) {
-        this.zipCode = zipCode;
-        this.roadAddress = roadAddress;
-        this.lotAddress = lotAddress;
-        this.detailAddress = detailAddress;
-        this.sido = sido;
-        this.sigungu = sigungu;
+    public Address(String rdnmadr, String lnmadr, String ctprvnnm, String signgunm, String emdnm) {
+        this.rdnmadr = rdnmadr;
+        this.lnmadr = lnmadr;
+        this.ctprvnnm = ctprvnnm;
+        this.signgunm = signgunm;
+        this.emdnm = emdnm;
+    }
+
+    /**
+     * 지오코딩 결과를 바탕으로 누락된 주소 정보를 보정한다.
+     */
+    public void updateDetails(String lnmadr, String emdnm) {
+        // 기존 지번 주소가 비어있다면 보정된 값으로 채운다.
+        if (this.lnmadr == null || this.lnmadr.isBlank()) {
+            this.lnmadr = lnmadr;
+        }
+
+        // 기존 읍면동 정보가 비어있다면 보정된 값으로 채운다.
+        if (this.emdnm == null || this.emdnm.isBlank()) {
+            this.emdnm = emdnm;
+        }
     }
 }
