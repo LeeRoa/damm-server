@@ -2,6 +2,7 @@ package com.damm.server.infra.publicdata.domain.impl;
 
 import com.damm.server.infra.publicdata.PublicDataClient;
 import com.damm.server.infra.publicdata.domain.PublicDataParser;
+import com.damm.server.infra.publicdata.domain.enums.District;
 import com.damm.server.infra.publicdata.dto.PublicDataMeta;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,8 +19,8 @@ import java.util.Map;
 @Component
 public class SeodaemunParser implements PublicDataParser {
     @Override
-    public boolean isSupport(String cityDistrict) {
-        return "서대문구".equals(cityDistrict);
+    public boolean isSupport(District cityDistrict) {
+        return District.SEODAEMUN == cityDistrict;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class SeodaemunParser implements PublicDataParser {
             rawMap.put(SmokingAreaItem.KEY_ID, String.valueOf(node.path("연번").asInt()));
             rawMap.put(SmokingAreaItem.KEY_AREA_NM, node.path("설치위치 상세").asText());
             rawMap.put(SmokingAreaItem.KEY_AREA_DESC, node.path("설치위치 상세").asText());
-            rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, "서울특별시");
+            rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, District.SEODAEMUN.getProvince().getKoreanName());
             rawMap.put(SmokingAreaItem.KEY_SIGNGUNM, node.path("자치구").asText());
             rawMap.put(SmokingAreaItem.KEY_AREA_SE, node.path("시설형태").asText());
             rawMap.put(SmokingAreaItem.KEY_AREA_AR, node.path("규모(㎡)").asText());

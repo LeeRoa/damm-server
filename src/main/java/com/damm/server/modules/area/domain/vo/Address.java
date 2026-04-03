@@ -1,5 +1,6 @@
 package com.damm.server.modules.area.domain.vo;
 
+import com.damm.server.infra.publicdata.domain.enums.District;
 import com.damm.server.infra.publicdata.domain.enums.Province;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -35,7 +36,7 @@ public class Address {
      * API 항목: signgunm (시군구명)
      */
     @Column(length = 40)
-    private String signgunm;
+    private District district;
 
     /**
      * API 항목: emdnm (읍면동명)
@@ -44,11 +45,11 @@ public class Address {
     private String emdnm;
 
     @Builder
-    public Address(String rdnmadr, String lnmadr, Province province, String signgunm, String emdnm) {
+    public Address(String rdnmadr, String lnmadr, Province province, District district, String emdnm) {
         this.rdnmadr = rdnmadr;
         this.lnmadr = lnmadr;
         this.province = province;
-        this.signgunm = signgunm;
+        this.district = district;
         this.emdnm = emdnm;
     }
 
@@ -75,7 +76,7 @@ public class Address {
 
         return String.format("%s %s %s",
                 this.getProvince().getKoreanName(),
-                this.getSigngunm(),
+                this.getDistrict(),
                 this.getRdnmadr());
     }
 }

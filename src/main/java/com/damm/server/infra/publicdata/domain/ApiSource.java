@@ -1,6 +1,7 @@
 package com.damm.server.infra.publicdata.domain;
 
 import com.damm.server.global.common.BaseTimeEntity;
+import com.damm.server.infra.publicdata.domain.enums.District;
 import com.damm.server.infra.publicdata.domain.enums.Province;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -24,7 +25,7 @@ public class ApiSource extends BaseTimeEntity {
     private Province province;  // 광역지자체 (예: 서울특별시, 경기도)
 
     @Column(nullable = false)
-    private String cityDistrict; // 기초지자체 (예: 송파구, 성남시)
+    private District cityDistrict; // 기초지자체 (예: 송파구, 성남시)
 
     @Column(nullable = false, length = 500)
     private String baseUrl;   // API 엔드포인트 주소
@@ -35,7 +36,7 @@ public class ApiSource extends BaseTimeEntity {
     private LocalDateTime lastSyncedAt; // 마지막 동기화 성공 시각
 
     @Builder
-    public ApiSource(Province province, String cityDistrict, String baseUrl, boolean active) {
+    public ApiSource(Province province, District cityDistrict, String baseUrl, boolean active) {
         this.province = province;
         this.cityDistrict = cityDistrict;
         this.baseUrl = baseUrl;

@@ -21,7 +21,7 @@ public class SmokingAreaMapper {
 
         Address addressVo = Address.builder()
                 .province(item.toProvince())
-                .signgunm(item.get(SmokingAreaItem.KEY_SIGNGUNM))
+                .district(item.toDistrict())
                 .emdnm(item.get(SmokingAreaItem.KEY_EMDNM))
                 .rdnmadr(item.get(SmokingAreaItem.KEY_RDNMADR))
                 .lnmadr(item.get(SmokingAreaItem.KEY_LNMADR))

@@ -1,5 +1,6 @@
 package com.damm.server.infra.publicdata.dto;
 
+import com.damm.server.infra.publicdata.domain.enums.District;
 import com.damm.server.infra.publicdata.domain.enums.Province;
 import java.util.Map;
 
@@ -31,5 +32,9 @@ public record SmokingAreaItem(Map<String, String> data) {
 
     public Province toProvince() {
         return Province.find(get(KEY_CTPRVNNM));
+    }
+
+    public District toDistrict() {
+        return District.find(get(KEY_SIGNGUNM));
     }
 }

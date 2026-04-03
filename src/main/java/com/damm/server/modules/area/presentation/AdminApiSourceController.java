@@ -3,9 +3,11 @@ package com.damm.server.modules.area.presentation;
 import com.damm.server.global.common.ApiResponse;
 import com.damm.server.modules.area.application.AdminApiSourceService;
 import com.damm.server.modules.area.dto.ApiSourceRegisterRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,8 +18,8 @@ public class AdminApiSourceController {
 
     private final AdminApiSourceService adminApiSourceService;
 
-    @PostMapping
-    public ApiResponse<Void> register(@RequestBody ApiSourceRegisterRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Void> register(@Valid @ModelAttribute ApiSourceRegisterRequest request) {
         adminApiSourceService.register(request);
         return ApiResponse.success();
     }

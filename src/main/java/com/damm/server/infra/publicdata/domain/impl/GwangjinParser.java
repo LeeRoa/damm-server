@@ -2,6 +2,7 @@ package com.damm.server.infra.publicdata.domain.impl;
 
 import com.damm.server.infra.publicdata.PublicDataClient;
 import com.damm.server.infra.publicdata.domain.PublicDataParser;
+import com.damm.server.infra.publicdata.domain.enums.District;
 import com.damm.server.infra.publicdata.dto.PublicDataMeta;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,8 +16,8 @@ import java.util.*;
 @Component
 public class GwangjinParser implements PublicDataParser {
     @Override
-    public boolean isSupport(String cityDistrict) {
-        return "광진구".equals(cityDistrict);
+    public boolean isSupport(District cityDistrict) {
+        return District.GWANGJIN == cityDistrict;
     }
 
     @Override

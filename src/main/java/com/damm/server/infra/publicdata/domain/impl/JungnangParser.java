@@ -1,4 +1,67 @@
 package com.damm.server.infra.publicdata.domain.impl;
 
-public class JungnangParser {
+import com.damm.server.infra.publicdata.PublicDataClient;
+import com.damm.server.infra.publicdata.domain.PublicDataParser;
+import com.damm.server.infra.publicdata.domain.enums.District;
+import com.damm.server.infra.publicdata.dto.PublicDataMeta;
+import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+@Component
+public class JungnangParser implements PublicDataParser {
+
+    @Override
+    public boolean isSupport(District cityDistrict) {
+        return District.JUNGNANG == cityDistrict;
+    }
+
+    @Override
+    public URI createUri(String baseUrl, String apiKey, int pageNo, int numOfRows) {
+        return UriComponentsBuilder.fromUriString(baseUrl)
+                .queryParam("serviceKey", apiKey)
+                .queryParam("page", pageNo)
+                .queryParam("perPage", numOfRows)
+                .queryParam("returnType", "JSON")
+                .build()
+                .toUri();
+    }
+
+    @Override
+    public PublicDataClient.PublicDataFetchResponse parse(JsonNode rootNode, ObjectMapper objectMapper) {
+        JsonNode dataNode = rootNode.path("data");
+        List<SmokingAreaItem> items = new ArrayList<>();
+
+        for (JsonNode node : dataNode) {
+            Map<String, String> rawMap = new HashMap<>();
+
+            rawMap.put(SmokingAreaItem.KEY_ID, UUID.randomUUID().toString());
+            rawMap.put(SmokingAreaItem.KEY_AREA_NM, node.path("시설명(업소)").asText());
+            rawMap.put(SmokingAreaItem.KEY_AREA_DESC, node.path("시설명(업소)").asText());
+            rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, District.JUNGNANG.getProvince().getKoreanName());
+            rawMap.put(SmokingAreaItem.KEY_SIGNGUNM, District.JUNGNANG.getKoreanName());
+            rawMap.put(SmokingAreaItem.KEY_AREA_SE, node.path("업종").asText());
+            rawMap.put(SmokingAreaItem.KEY_RDNMADR, node.path("주소").asText());
+            rawMap.put(SmokingAreaItem.KEY_INST_NM, "중랑구청");
+
+            items.add(new SmokingAreaItem(rawMap));
+        }
+
+        PublicDataMeta meta = new PublicDataMeta(
+                rootNode.path("totalCount").asInt(),
+                rootNode.path("page").asText(),
+                rootNode.path("perPage").asText()
+        );
+
+        return new PublicDataClient.PublicDataFetchResponse(items, meta);
+    }
 }
