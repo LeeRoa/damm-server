@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 public class SmokingAreaMapper {
 
     public SmokingArea toEntity(SmokingAreaItem item) {
-        Double lat = parseDouble(item.get(SmokingAreaItem.KEY_LATITUDE));
-        Double lng = parseDouble(item.get(SmokingAreaItem.KEY_LONGITUDE));
+        Double lat = parseDouble(item.get(SmokingAreaItem.위도));
+        Double lng = parseDouble(item.get(SmokingAreaItem.경도));
 
         Coordinate coordinate = new Coordinate(lat, lng);
 
@@ -26,18 +26,18 @@ public class SmokingAreaMapper {
 
         return SmokingArea.builder()
                 .id(item.get(SmokingAreaItem.KEY_ID))
-                .areaNm(item.getOrDefault(SmokingAreaItem.KEY_AREA_NM, "이름 없음"))
-                .areaDesc(item.get(SmokingAreaItem.KEY_AREA_DESC))
+                .areaNm(item.getOrDefault(SmokingAreaItem.흡연구역_명칭, "이름 없음"))
+                .areaDesc(item.get(SmokingAreaItem.설치_위치_상세))
                 .coordinate(coordinate)
                 .address(addressVo)
-                .areaAr(parseDouble(item.get(SmokingAreaItem.KEY_AREA_AR)))
-                .fcltyKnd(item.get(SmokingAreaItem.KEY_FCLTY_KND))
-                .instNm(item.get(SmokingAreaItem.KEY_INST_NM))
-                .areaSe(item.get(SmokingAreaItem.KEY_AREA_SE) != null && !item.get(SmokingAreaItem.KEY_AREA_SE).isBlank()
-                        ? AreaType.from(item.get(SmokingAreaItem.KEY_AREA_SE))
+                .areaAr(parseDouble(item.get(SmokingAreaItem.면적)))
+                .fcltyKnd(item.get(SmokingAreaItem.시설_구분))
+                .instNm(item.get(SmokingAreaItem.관리_기관_명칭))
+                .areaSe(item.get(SmokingAreaItem.흡연구역_구분) != null && !item.get(SmokingAreaItem.흡연구역_구분).isBlank()
+                        ? AreaType.from(item.get(SmokingAreaItem.흡연구역_구분))
                         : AreaType.GENERAL)
                 .status(AreaStatus.VERIFIED)
-                .refDate(item.get(SmokingAreaItem.KEY_REF_DATE))
+                .refDate(item.get(SmokingAreaItem.데이터_기준_일자))
                 .build();
     }
 

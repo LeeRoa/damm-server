@@ -5,20 +5,20 @@ import java.util.Map;
 public record SmokingAreaItem(Map<String, String> data) {
     // 공통 상수 정의
     public static final String KEY_ID = "id";
-    public static final String KEY_AREA_NM = "areaNm";
-    public static final String KEY_AREA_DESC = "areaDesc";
-    public static final String KEY_CTPRVNNM = "ctprvnnm";
-    public static final String KEY_SIGNGUNM = "signgunm";
-    public static final String KEY_EMDNM = "emdnm";
-    public static final String KEY_AREA_SE = "areaSe";
-    public static final String KEY_AREA_AR = "areaAr";
-    public static final String KEY_RDNMADR = "rdnmadr";
-    public static final String KEY_LNMADR = "lnmadr";
-    public static final String KEY_INST_NM = "instNm";
-    public static final String KEY_LATITUDE = "latitude";
-    public static final String KEY_LONGITUDE = "longitude";
-    public static final String KEY_FCLTY_KND = "fcltyKnd";
-    public static final String KEY_REF_DATE = "refDate";
+    public static final String 흡연구역_명칭 = "areaNm";
+    public static final String 설치_위치_상세 = "areaDesc";
+    public static final String 시도_명칭 = "ctprvnnm";
+    public static final String 시군구_명칭 = "signgunm";
+    public static final String 읍면동_명칭 = "emdnm";
+    public static final String 흡연구역_구분 = "areaSe";
+    public static final String 면적 = "areaAr";
+    public static final String 도로명_주소 = "rdnmadr";
+    public static final String 지번_주소 = "lnmadr";
+    public static final String 관리_기관_명칭 = "instNm";
+    public static final String 위도 = "latitude";
+    public static final String 경도 = "longitude";
+    public static final String 시설_구분 = "fcltyKnd";
+    public static final String 데이터_기준_일자 = "refDate";
 
     public String get(String key) {
         return data.get(key);
@@ -30,8 +30,8 @@ public record SmokingAreaItem(Map<String, String> data) {
 
     public String getAssembledAddress() {
         // 1. 지역 접두사 생성 (예: "서울특별시 중랑구")
-        String province = getOrDefault(KEY_CTPRVNNM, "").trim();
-        String district = getOrDefault(KEY_SIGNGUNM, "").trim();
+        String province = getOrDefault(시도_명칭, "").trim();
+        String district = getOrDefault(시군구_명칭, "").trim();
 
         StringBuilder prefixBuilder = new StringBuilder();
         if (!province.isEmpty()) prefixBuilder.append(province);
@@ -53,16 +53,16 @@ public record SmokingAreaItem(Map<String, String> data) {
      */
     private String selectDetailedAddress() {
         // 1순위: 도로명 주소
-        String rdnm = getOrDefault(KEY_RDNMADR, "").trim();
+        String rdnm = getOrDefault(도로명_주소, "").trim();
         if (!rdnm.isEmpty()) return rdnm;
 
         // 2순위: 지번 주소
-        String lnm = getOrDefault(KEY_LNMADR, "").trim();
+        String lnm = getOrDefault(지번_주소, "").trim();
         if (!lnm.isEmpty()) return lnm;
 
         // 3순위: 조각난 정보 합치기 (읍면동 + 상세 지명)
-        String emd = getOrDefault(KEY_EMDNM, "").trim();
-        String desc = getOrDefault(KEY_AREA_DESC, "").trim();
+        String emd = getOrDefault(읍면동_명칭, "").trim();
+        String desc = getOrDefault(설치_위치_상세, "").trim();
         return (emd + " " + desc).trim();
     }
 

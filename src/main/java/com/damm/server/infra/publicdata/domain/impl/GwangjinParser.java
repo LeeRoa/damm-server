@@ -44,20 +44,20 @@ public class GwangjinParser implements PublicDataParser {
                     Map<String, String> rawMap = new HashMap<>();
 
                     rawMap.put(SmokingAreaItem.KEY_ID, node.path("id").asText());
-                    rawMap.put(SmokingAreaItem.KEY_AREA_NM, node.path("area_nm").asText());
-                    rawMap.put(SmokingAreaItem.KEY_AREA_DESC, node.path("area_desc").asText());
-                    rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, node.path("ctprvnnm").asText());
-                    rawMap.put(SmokingAreaItem.KEY_SIGNGUNM, node.path("signgunm").asText());
-                    rawMap.put(SmokingAreaItem.KEY_EMDNM, node.path("emdnm").asText());
-                    rawMap.put(SmokingAreaItem.KEY_AREA_SE, node.path("area_se").asText());
-                    rawMap.put(SmokingAreaItem.KEY_AREA_AR, node.path("area_ar").asText());
-                    rawMap.put(SmokingAreaItem.KEY_RDNMADR, node.path("rdnmadr").asText());
-                    rawMap.put(SmokingAreaItem.KEY_LNMADR, node.path("lnmadr").asText());
-                    rawMap.put(SmokingAreaItem.KEY_INST_NM, node.path("inst_nm").asText());
-                    rawMap.put(SmokingAreaItem.KEY_LATITUDE, node.path("latitude").asText());
-                    rawMap.put(SmokingAreaItem.KEY_LONGITUDE, node.path("longitude").asText());
-                    rawMap.put(SmokingAreaItem.KEY_FCLTY_KND, node.path("fclty_knd").asText());
-                    rawMap.put(SmokingAreaItem.KEY_REF_DATE, node.path("ref_date").asText());
+                    rawMap.put(SmokingAreaItem.흡연구역_명칭, node.path("area_nm").asText());
+                    rawMap.put(SmokingAreaItem.설치_위치_상세, node.path("area_desc").asText());
+                    rawMap.put(SmokingAreaItem.시도_명칭, node.path("ctprvnnm").asText());
+                    rawMap.put(SmokingAreaItem.시군구_명칭, node.path("signgunm").asText());
+                    rawMap.put(SmokingAreaItem.읍면동_명칭, node.path("emdnm").asText());
+                    rawMap.put(SmokingAreaItem.흡연구역_구분, node.path("area_se").asText());
+                    rawMap.put(SmokingAreaItem.면적, node.path("area_ar").asText());
+                    rawMap.put(SmokingAreaItem.도로명_주소, node.path("rdnmadr").asText());
+                    rawMap.put(SmokingAreaItem.지번_주소, node.path("lnmadr").asText());
+                    rawMap.put(SmokingAreaItem.관리_기관_명칭, node.path("inst_nm").asText());
+                    rawMap.put(SmokingAreaItem.위도, node.path("latitude").asText());
+                    rawMap.put(SmokingAreaItem.경도, node.path("longitude").asText());
+                    rawMap.put(SmokingAreaItem.시설_구분, node.path("fclty_knd").asText());
+                    rawMap.put(SmokingAreaItem.데이터_기준_일자, node.path("ref_date").asText());
 
                     items.add(new SmokingAreaItem(rawMap));
                 } else if (node.has("totalCount")) {

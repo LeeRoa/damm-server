@@ -45,13 +45,12 @@ public class JungnangParser implements PublicDataParser {
             Map<String, String> rawMap = new HashMap<>();
 
             rawMap.put(SmokingAreaItem.KEY_ID, UUID.randomUUID().toString());
-            rawMap.put(SmokingAreaItem.KEY_AREA_NM, node.path("시설명(업소)").asText());
-            rawMap.put(SmokingAreaItem.KEY_AREA_DESC, node.path("시설명(업소)").asText());
-            rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, District.JUNGNANG.getProvince().getKoreanName());
-            rawMap.put(SmokingAreaItem.KEY_SIGNGUNM, District.JUNGNANG.getKoreanName());
-            rawMap.put(SmokingAreaItem.KEY_AREA_SE, node.path("업종").asText());
-            rawMap.put(SmokingAreaItem.KEY_RDNMADR, node.path("주소").asText());
-            rawMap.put(SmokingAreaItem.KEY_INST_NM, "중랑구청");
+            rawMap.put(SmokingAreaItem.흡연구역_명칭, node.path("시설명(업소)").asText());
+            rawMap.put(SmokingAreaItem.설치_위치_상세, node.path("시설명(업소)").asText());
+            rawMap.put(SmokingAreaItem.시도_명칭, District.JUNGNANG.getProvince().getKoreanName());
+            rawMap.put(SmokingAreaItem.시군구_명칭, District.JUNGNANG.getKoreanName());
+            rawMap.put(SmokingAreaItem.흡연구역_구분, node.path("업종").asText());
+            rawMap.put(SmokingAreaItem.도로명_주소, node.path("주소").asText());
 
             items.add(new SmokingAreaItem(rawMap));
         }

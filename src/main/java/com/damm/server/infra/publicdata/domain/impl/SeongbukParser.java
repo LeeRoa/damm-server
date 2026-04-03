@@ -40,15 +40,15 @@ public class SeongbukParser implements PublicDataParser {
             Map<String, String> rawMap = new HashMap<>();
 
             rawMap.put(SmokingAreaItem.KEY_ID, UUID.randomUUID().toString());
-            rawMap.put(SmokingAreaItem.KEY_AREA_NM, node.path("관리").asText());
-            rawMap.put(SmokingAreaItem.KEY_AREA_DESC, node.path("설치 위치").asText());
-            rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, District.SEONGBUK.getProvince().getKoreanName());
-            rawMap.put(SmokingAreaItem.KEY_SIGNGUNM, node.path("자치구").asText());
-            rawMap.put(SmokingAreaItem.KEY_AREA_SE, node.path("시설형태").asText());
-            rawMap.put(SmokingAreaItem.KEY_AREA_AR, node.path("규모").asText());
-            rawMap.put(SmokingAreaItem.KEY_RDNMADR, node.path("설치 위치").asText());
-            rawMap.put(SmokingAreaItem.KEY_INST_NM, node.path("관리").asText());
-            rawMap.put(SmokingAreaItem.KEY_REF_DATE, node.path("기준일자").asText());
+            rawMap.put(SmokingAreaItem.흡연구역_명칭, node.path("관리").asText());
+            rawMap.put(SmokingAreaItem.설치_위치_상세, node.path("설치 위치").asText());
+            rawMap.put(SmokingAreaItem.시도_명칭, District.SEONGBUK.getProvince().getKoreanName());
+            rawMap.put(SmokingAreaItem.시군구_명칭, node.path("자치구").asText());
+            rawMap.put(SmokingAreaItem.흡연구역_구분, node.path("시설형태").asText());
+            rawMap.put(SmokingAreaItem.면적, node.path("규모").asText());
+            rawMap.put(SmokingAreaItem.도로명_주소, node.path("설치 위치").asText());
+            rawMap.put(SmokingAreaItem.관리_기관_명칭, node.path("관리").asText());
+            rawMap.put(SmokingAreaItem.데이터_기준_일자, node.path("기준일자").asText());
 
             items.add(new SmokingAreaItem(rawMap));
         }

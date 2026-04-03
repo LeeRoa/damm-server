@@ -11,16 +11,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
-public class SeodaemunParser implements PublicDataParser {
+public class YeongdeungpoParser implements PublicDataParser {
     @Override
     public boolean isSupport(District cityDistrict) {
-        return District.SEODAEMUN == cityDistrict;
+        return District.YEONGDEUNGPO == cityDistrict;
     }
 
     @Override
@@ -42,16 +39,17 @@ public class SeodaemunParser implements PublicDataParser {
         for (JsonNode node : dataNode) {
             Map<String, String> rawMap = new HashMap<>();
 
-            rawMap.put(SmokingAreaItem.KEY_ID, String.valueOf(node.path("연번").asInt()));
-            rawMap.put(SmokingAreaItem.흡연구역_명칭, node.path("설치위치 상세").asText());
-            rawMap.put(SmokingAreaItem.설치_위치_상세, node.path("설치위치 상세").asText());
-            rawMap.put(SmokingAreaItem.시도_명칭, District.SEODAEMUN.getProvince().getKoreanName());
-            rawMap.put(SmokingAreaItem.시군구_명칭, node.path("자치구").asText());
-            rawMap.put(SmokingAreaItem.흡연구역_구분, node.path("시설형태").asText());
-            rawMap.put(SmokingAreaItem.면적, node.path("규모(㎡)").asText());
-            rawMap.put(SmokingAreaItem.도로명_주소, node.path("설치위치").asText());
-            rawMap.put(SmokingAreaItem.관리_기관_명칭, node.path("관리기관").asText());
+            rawMap.put(SmokingAreaItem.KEY_ID, UUID.randomUUID().toString());
+            rawMap.put(SmokingAreaItem.경도, node.path("경도").asText());
+            rawMap.put(SmokingAreaItem.관리_기관_명칭, node.path("관리").asText());
+            rawMap.put(SmokingAreaItem.면적, node.path("규모(제곱미터)").asText());
             rawMap.put(SmokingAreaItem.데이터_기준_일자, node.path("설치일").asText());
+            rawMap.put(SmokingAreaItem.설치_위치_상세, node.path("시설 구분").asText());
+            rawMap.put(SmokingAreaItem.흡연구역_명칭, node.path("시설 구분").asText());
+            rawMap.put(SmokingAreaItem.흡연구역_구분, node.path("시설형태").asText());
+            rawMap.put(SmokingAreaItem.위도, node.path("위도").asText());
+            rawMap.put(SmokingAreaItem.시도_명칭, District.YEONGDEUNGPO.getProvince().getKoreanName());
+            rawMap.put(SmokingAreaItem.시군구_명칭, District.YEONGDEUNGPO.getKoreanName());
 
             items.add(new SmokingAreaItem(rawMap));
         }
