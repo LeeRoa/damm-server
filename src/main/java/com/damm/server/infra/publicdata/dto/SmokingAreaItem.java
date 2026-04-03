@@ -1,5 +1,6 @@
 package com.damm.server.infra.publicdata.dto;
 
+import com.damm.server.infra.publicdata.domain.enums.Province;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record SmokingAreaItem(
@@ -47,4 +48,8 @@ public record SmokingAreaItem(
 
         // 데이터 기준일자
         @JsonProperty("ref_date") String refDate
-) {}
+) {
+    public Province toProvince() {
+        return Province.find(this.ctprvnnm);
+    }
+}

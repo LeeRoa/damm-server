@@ -30,7 +30,7 @@ public class GwangjinParser implements PublicDataParser {
                 .queryParam("numOfRows", numOfRows)
                 .queryParam("id", Optional.empty())
                 .queryParam("type", "json")
-                .build(true)
+                .build()
                 .toUri();
     }
 

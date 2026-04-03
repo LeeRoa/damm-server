@@ -29,12 +29,31 @@ public enum Province {
     private final String koreanName;
 
     /**
-     * 국문 명칭으로 Enum을 찾아주는 편의 메서드 (지오코딩 결과 매핑용)
+     * DB 컨버터용: 정확히 일치하는 한글 명칭으로 조회한다.
      */
     public static Province fromKoreanName(String koreanName) {
         return Arrays.stream(Province.values())
                 .filter(p -> p.getKoreanName().equals(koreanName))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("알 수 없는 지역명: " + koreanName));
+                .orElse(null); // 에러보다는 null 처리가 안전할 수 있다.
+    }
+
+    /**
+     * DTO -> Entity 변환용: "서울", "서울시", "서울특별시" 모두 SEOUL로 매핑한다.
+     */
+    public static Province find(String ctprvnnm) {
+        if (ctprvnnm == null || ctprvnnm.isBlank()) {
+            return null;
+        }
+
+        return Arrays.stream(Province.values())
+                .filter(p -> {
+                    // 1. "서울특별시"가 "서울"을 포함하거나 (서울시, 서울특별시 대응)
+                    // 2. 입력값이 "서울"이라는 핵심 키워드를 포함할 때
+                    String coreName = p.koreanName.substring(0, 2);
+                    return ctprvnnm.contains(coreName);
+                })
+                .findFirst()
+                .orElse(null); // 매칭되는 게 없으면 null 반환 후 로그 처리가 깔끔하다.
     }
 }

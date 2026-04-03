@@ -49,7 +49,7 @@ public class SmokingAreaWriter {
      * 도로명 주소를 기반으로 위경도 좌표를 가져와 엔티티에 세팅한다.
      */
     private void compensateCoordinate(SmokingArea area) {
-        String address = area.getAddress().getRdnmadr();
+        String address = area.getAddress().getFullRoadAddress();
 
         // 1. 확장된 데이터 가져오기
         var response = kakaoGeocodingClient.getGeocodingData(address);

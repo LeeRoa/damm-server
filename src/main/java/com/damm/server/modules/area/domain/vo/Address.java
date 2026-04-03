@@ -1,5 +1,6 @@
 package com.damm.server.modules.area.domain.vo;
 
+import com.damm.server.infra.publicdata.domain.enums.Province;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -28,7 +29,7 @@ public class Address {
      * API 항목: ctprvnnm (시도명)
      */
     @Column(length = 40)
-    private String ctprvnnm;
+    private Province province;
 
     /**
      * API 항목: signgunm (시군구명)
@@ -43,10 +44,10 @@ public class Address {
     private String emdnm;
 
     @Builder
-    public Address(String rdnmadr, String lnmadr, String ctprvnnm, String signgunm, String emdnm) {
+    public Address(String rdnmadr, String lnmadr, Province province, String signgunm, String emdnm) {
         this.rdnmadr = rdnmadr;
         this.lnmadr = lnmadr;
-        this.ctprvnnm = ctprvnnm;
+        this.province = province;
         this.signgunm = signgunm;
         this.emdnm = emdnm;
     }
@@ -64,5 +65,17 @@ public class Address {
         if (this.emdnm == null || this.emdnm.isBlank()) {
             this.emdnm = emdnm;
         }
+    }
+
+    public String getFullRoadAddress() {
+        // 만약 이미 풀 주소라면 그대로 반환, 아니라면 조합
+        if (this.getRdnmadr().startsWith(this.getProvince().getKoreanName())) {
+            return this.getRdnmadr();
+        }
+
+        return String.format("%s %s %s",
+                this.getProvince().getKoreanName(),
+                this.getSigngunm(),
+                this.getRdnmadr());
     }
 }

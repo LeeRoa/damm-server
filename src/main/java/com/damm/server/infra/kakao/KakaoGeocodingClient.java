@@ -38,7 +38,8 @@ public class KakaoGeocodingClient {
 
             Map<String, String> headers = Map.of("Authorization", "KakaoAK " + kakaoApiKey);
 
-            JsonNode response = restApiUtil.get(uri, headers, new ParameterizedTypeReference<JsonNode>() {});
+            JsonNode response = restApiUtil.get(uri, headers, new ParameterizedTypeReference<>() {
+            });
 
             return extractGeocodingData(response, address);
         } catch (Exception e) {

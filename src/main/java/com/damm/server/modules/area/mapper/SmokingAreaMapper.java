@@ -20,7 +20,7 @@ public class SmokingAreaMapper {
         Coordinate coordinate = new Coordinate(lat, lng);
 
         Address addressVo = Address.builder()
-                .ctprvnnm(item.ctprvnnm())
+                .province(item.toProvince())
                 .signgunm(item.signgunm())
                 .emdnm(item.emdnm())
                 .rdnmadr(item.rdnmadr())
