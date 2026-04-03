@@ -2,6 +2,7 @@ package com.damm.server.modules.area.domain;
 
 import com.damm.server.global.common.BaseTimeEntity;
 import com.damm.server.infra.kakao.dto.GeocodingResponse;
+import com.damm.server.modules.area.domain.enums.AddressStatus;
 import com.damm.server.modules.area.domain.enums.AreaStatus;
 import com.damm.server.modules.area.domain.enums.AreaType;
 import com.damm.server.modules.area.domain.vo.Address;
@@ -85,6 +86,9 @@ public class SmokingArea extends BaseTimeEntity {
      */
     private String refDate;
 
+    @Enumerated(EnumType.STRING)
+    private AddressStatus addressStatus;
+
     /**
      * 엔티티 생성을 위한 빌더.
      * id는 영속성 컨텍스트가 관리하므로 빌더에서 제외한다.
@@ -133,7 +137,19 @@ public class SmokingArea extends BaseTimeEntity {
 
         // 2. 주소 정보 업데이트 (Address VO 내부 메서드 활용 권장)
         if (this.address != null) {
-            this.address.updateDetails(res.lnmadr(), res.emdnm());
+            this.address.updateByGeocoding(res);
         }
+    }
+
+    // [업데이트 로직] 지오코딩 성공 시 호출
+    public void updateGeocodingSuccess(GeocodingResponse res) {
+        this.address.updateByGeocoding(res); // Address VO 내부 필드 교체
+        this.coordinate = new Coordinate(res.latitude(), res.longitude()); // 좌표 교체
+        this.addressStatus = AddressStatus.SUCCESS; // 상태 변경
+    }
+
+    // [업데이트 로직] 지오코딩 실패 시 호출
+    public void updateGeocodingFail() {
+        this.addressStatus = AddressStatus.FAIL;
     }
 }

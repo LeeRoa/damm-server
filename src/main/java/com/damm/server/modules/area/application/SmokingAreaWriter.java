@@ -8,9 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class SmokingAreaWriter {
 
     private final SmokingAreaRepository smokingAreaRepository;
@@ -22,12 +22,10 @@ public class SmokingAreaWriter {
      */
     @Transactional
     public void saveOrUpdate(SmokingArea newArea) {
-        // 1. 위도나 경도가 없는 경우 지오코딩을 수행한다.
-        if (isCoordinateMissing(newArea)) {
-            compensateCoordinate(newArea);
-        }
+        // 데이터 통일성을 위해 지오코딩을 수행한다.
+        compensateCoordinate(newArea);
 
-        // 2. 기존 데이터 존재 여부에 따라 저장 또는 수정을 진행한다.
+        // 기존 데이터 존재 여부에 따라 저장 또는 수정을 진행한다.
         smokingAreaRepository.findById(newArea.getId())
                 .ifPresentOrElse(
                         existingArea -> existingArea.update(newArea),
@@ -46,17 +44,25 @@ public class SmokingAreaWriter {
     }
 
     /**
-     * 도로명 주소를 기반으로 위경도 좌표를 가져와 엔티티에 세팅한다.
+     * 공공데이터 주소를 기반으로 위경도 좌표를 가져와 엔티티에 세팅한다.
      */
     private void compensateCoordinate(SmokingArea area) {
-        String address = area.getAddress().getFullRoadAddress();
+        String searchAddress = area.getAddress().getRawAddress();
+
+        if (searchAddress.isBlank()) {
+            area.updateGeocodingFail();
+            return;
+        }
 
         // 1. 확장된 데이터 가져오기
-        var response = kakaoGeocodingClient.getGeocodingData(address);
+        var response = kakaoGeocodingClient.getGeocodingData(searchAddress);
 
         if (response != null) {
-            area.compensateLocation(response);
-            log.debug("[보정 완료] ID: {}, 지역: {}", area.getId(), response.emdnm());
+            area.updateGeocodingSuccess(response);
+            log.debug("[표준화 완료] ID: {}, 도로명: {}", area.getId(), response.rdnmadr());
+        } else {
+            area.updateGeocodingFail();
+            log.warn("[보정 실패] ID: {}, 검색어: {}", area.getId(), searchAddress);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.damm.server.modules.area.mapper;
 
+import com.damm.server.global.util.AddressUtils;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
 import com.damm.server.modules.area.domain.SmokingArea;
 import com.damm.server.modules.area.domain.enums.AreaStatus;
@@ -20,11 +21,7 @@ public class SmokingAreaMapper {
         Coordinate coordinate = new Coordinate(lat, lng);
 
         Address addressVo = Address.builder()
-                .province(item.toProvince())
-                .district(item.toDistrict())
-                .emdnm(item.get(SmokingAreaItem.KEY_EMDNM))
-                .rdnmadr(item.get(SmokingAreaItem.KEY_RDNMADR))
-                .lnmadr(item.get(SmokingAreaItem.KEY_LNMADR))
+                .rawAddress(AddressUtils.refineForGeocoding(item.getAssembledAddress()))
                 .build();
 
         return SmokingArea.builder()

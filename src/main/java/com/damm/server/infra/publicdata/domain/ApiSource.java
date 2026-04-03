@@ -44,7 +44,7 @@ public class ApiSource extends BaseTimeEntity {
     }
 
     public String getFullRegionName() {
-        return String.format("%s %s", this.province.getKoreanName(), this.cityDistrict);
+        return String.format("%s %s", this.province.getKoreanName(), this.cityDistrict.getKoreanName());
     }
 
     public void updateSyncTime() {

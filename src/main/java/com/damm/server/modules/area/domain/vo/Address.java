@@ -1,5 +1,6 @@
 package com.damm.server.modules.area.domain.vo;
 
+import com.damm.server.infra.kakao.dto.GeocodingResponse;
 import com.damm.server.infra.publicdata.domain.enums.District;
 import com.damm.server.infra.publicdata.domain.enums.Province;
 import jakarta.persistence.Column;
@@ -13,6 +14,10 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
+
+    // API에서 넘어온 가공되지 않은 주소
+    @Column(length = 500)
+    private String rawAddress;
 
     /**
      * API 항목: rdnmadr (소재지 도로명주소)
@@ -45,27 +50,19 @@ public class Address {
     private String emdnm;
 
     @Builder
-    public Address(String rdnmadr, String lnmadr, Province province, District district, String emdnm) {
-        this.rdnmadr = rdnmadr;
-        this.lnmadr = lnmadr;
-        this.province = province;
-        this.district = district;
-        this.emdnm = emdnm;
+    public Address(String rawAddress) {
+        this.rawAddress = rawAddress;
     }
 
     /**
      * 지오코딩 결과를 바탕으로 누락된 주소 정보를 보정한다.
      */
-    public void updateDetails(String lnmadr, String emdnm) {
-        // 기존 지번 주소가 비어있다면 보정된 값으로 채운다.
-        if (this.lnmadr == null || this.lnmadr.isBlank()) {
-            this.lnmadr = lnmadr;
-        }
-
-        // 기존 읍면동 정보가 비어있다면 보정된 값으로 채운다.
-        if (this.emdnm == null || this.emdnm.isBlank()) {
-            this.emdnm = emdnm;
-        }
+    public void updateByGeocoding(GeocodingResponse res) {
+        this.rdnmadr = res.rdnmadr();
+        this.lnmadr = res.lnmadr();
+        this.province = res.province();
+        this.district = res.district();
+        this.emdnm = res.emdnm();
     }
 
     public String getFullRoadAddress() {

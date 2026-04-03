@@ -2,6 +2,8 @@ package com.damm.server.infra.kakao;
 
 import com.damm.server.global.util.RestApiUtil;
 import com.damm.server.infra.kakao.dto.GeocodingResponse;
+import com.damm.server.infra.publicdata.domain.enums.District;
+import com.damm.server.infra.publicdata.domain.enums.Province;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,26 +50,40 @@ public class KakaoGeocodingClient {
         }
     }
 
-    private GeocodingResponse extractGeocodingData(JsonNode response, String address) {
+    private GeocodingResponse extractGeocodingData(JsonNode response, String originalAddress) {
         JsonNode documents = response.path("documents");
 
         if (documents.isArray() && !documents.isEmpty()) {
             JsonNode first = documents.get(0);
 
-            // 1. 좌표 추출 (x: 경도, y: 위도)
+            // 좌표 추출 (x: 경도, y: 위도)
             double lon = first.path("x").asDouble();
             double lat = first.path("y").asDouble();
 
-            // 2. 주소 정보 추출 (지번 및 읍면동)
-            JsonNode addressNode = first.path("address");
-            String lnmadr = addressNode.path("address_name").asText(); // 전체 지번 주소
-            String emdnm = addressNode.path("region_3depth_name").asText(); // 읍면동명
+            // 도로명 주소 추출 (road_address 노드가 없으면 빈 문자열)
+            JsonNode roadAddressNode = first.path("road_address");
+            String rdnmadr = roadAddressNode.path("address_name").asText();
 
-            log.debug("[지오코딩 성공] 주소: {}, 좌표: {}, {}", address, lat, lon);
-            return new GeocodingResponse(lat, lon, lnmadr, emdnm);
+            // 지번 및 행정구역 정보 추출
+            JsonNode addressNode = first.path("address");
+            String lnmadr = addressNode.path("address_name").asText();
+            String emdnm = addressNode.path("region_3depth_name").asText();
+
+            // 이넘 변환을 위한 지역 명칭 추출
+            String region1 = addressNode.path("region_1depth_name").asText(); // 시도 (예: 서울특별시)
+            String region2 = addressNode.path("region_2depth_name").asText(); // 시군구 (예: 중랑구)
+
+            // 기존에 정의한 find() 메서드로 ENUM 변환
+            Province province = Province.find(region1);
+            District district = District.find(region2);
+
+            log.debug("[지오코딩 성공] 원본: {}, 도로명: {}, 좌표: {}, {}",
+                    originalAddress, rdnmadr, lat, lon);
+
+            return new GeocodingResponse(lat, lon, rdnmadr, lnmadr, province, district, emdnm);
         }
 
-        log.warn("[지오코딩 결과 없음] 주소: {}", address);
+        log.warn("[지오코딩 결과 없음] 주소: {}", originalAddress);
         return null;
     }
 }
