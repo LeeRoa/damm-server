@@ -14,31 +14,33 @@ import org.springframework.stereotype.Component;
 public class SmokingAreaMapper {
 
     public SmokingArea toEntity(SmokingAreaItem item) {
-        Double lat = parseDouble(item.latitude());
-        Double lng = parseDouble(item.longitude());
+        Double lat = parseDouble(item.get(SmokingAreaItem.KEY_LATITUDE));
+        Double lng = parseDouble(item.get(SmokingAreaItem.KEY_LONGITUDE));
 
         Coordinate coordinate = new Coordinate(lat, lng);
 
         Address addressVo = Address.builder()
                 .province(item.toProvince())
-                .signgunm(item.signgunm())
-                .emdnm(item.emdnm())
-                .rdnmadr(item.rdnmadr())
-                .lnmadr(item.lnmadr())
+                .signgunm(item.get(SmokingAreaItem.KEY_SIGNGUNM))
+                .emdnm(item.get(SmokingAreaItem.KEY_EMDNM))
+                .rdnmadr(item.get(SmokingAreaItem.KEY_RDNMADR))
+                .lnmadr(item.get(SmokingAreaItem.KEY_LNMADR))
                 .build();
 
         return SmokingArea.builder()
-                .id(item.id())
-                .areaNm(item.areaNm() != null ? item.areaNm() : "이름 없음")
-                .areaDesc(item.areaDesc())
+                .id(item.get(SmokingAreaItem.KEY_ID))
+                .areaNm(item.getOrDefault(SmokingAreaItem.KEY_AREA_NM, "이름 없음"))
+                .areaDesc(item.get(SmokingAreaItem.KEY_AREA_DESC))
                 .coordinate(coordinate)
                 .address(addressVo)
-                .areaAr(parseDouble(item.areaAr()))
-                .fcltyKnd(item.fcltyKnd())
-                .instNm(item.instNm())
-                .areaSe(item.areaSe() != null ? AreaType.from(item.areaSe()) : AreaType.GENERAL)
+                .areaAr(parseDouble(item.get(SmokingAreaItem.KEY_AREA_AR)))
+                .fcltyKnd(item.get(SmokingAreaItem.KEY_FCLTY_KND))
+                .instNm(item.get(SmokingAreaItem.KEY_INST_NM))
+                .areaSe(item.get(SmokingAreaItem.KEY_AREA_SE) != null && !item.get(SmokingAreaItem.KEY_AREA_SE).isBlank()
+                        ? AreaType.from(item.get(SmokingAreaItem.KEY_AREA_SE))
+                        : AreaType.GENERAL)
                 .status(AreaStatus.VERIFIED)
-                .refDate(item.refDate())
+                .refDate(item.get(SmokingAreaItem.KEY_REF_DATE))
                 .build();
     }
 

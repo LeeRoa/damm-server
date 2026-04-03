@@ -19,7 +19,6 @@ public class AdminApiSourceService {
                 .province(request.province())       // 예: "서울특별시"
                 .cityDistrict(request.cityDistrict()) // 예: "송파구"
                 .baseUrl(request.baseUrl())
-                .parserType(request.parserType())
                 .active(true)
                 .build();
 

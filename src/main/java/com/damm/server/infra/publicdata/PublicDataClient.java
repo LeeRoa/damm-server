@@ -35,7 +35,7 @@ public class PublicDataClient {
 
     public PublicDataFetchResponse fetchSmokingAreas(ApiSource source, int pageNo, int numOfRows) {
         PublicDataParser parser = parsers.stream()
-                .filter(p -> p.isSupport(source.getParserType()))
+                .filter(p -> p.isSupport(source.getCityDistrict()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("지원하지 않는 파서 타입입니다."));
 

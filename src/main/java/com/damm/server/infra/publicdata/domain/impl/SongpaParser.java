@@ -2,7 +2,6 @@ package com.damm.server.infra.publicdata.domain.impl;
 
 import com.damm.server.infra.publicdata.PublicDataClient;
 import com.damm.server.infra.publicdata.domain.PublicDataParser;
-import com.damm.server.infra.publicdata.domain.enums.ParserType;
 import com.damm.server.infra.publicdata.dto.PublicDataMeta;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,13 +11,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class SongpaParser implements PublicDataParser {
     @Override
-    public boolean isSupport(ParserType parserType) {
-        return ParserType.KOR_PUB_V1 == parserType;
+    public boolean isSupport(String cityDistrict) {
+        return "송파구".equals(cityDistrict);
     }
 
     @Override
@@ -38,24 +39,19 @@ public class SongpaParser implements PublicDataParser {
         List<SmokingAreaItem> items = new ArrayList<>();
 
         for (JsonNode node : dataNode) {
-            // 송파구 데이터의 한글 키값을 SmokingAreaItem 레코드 규격에 맞춰 매핑한다.
-            items.add(new SmokingAreaItem(
-                    String.valueOf(node.path("연번").asInt()), // 1. id
-                    node.path("건물명").asText(),              // 2. areaNm
-                    node.path("건물명").asText(),          // 3. areaDesc (상세가 없어서 대체함)
-                    "서울특별시",                             // 4. ctprvnnm
-                    "송파구",                                 // 5. signgunm
-                    null,                                    // 6. emdnm (지오코딩 보정 대상)
-                    node.path("구분").asText(),               // 7. areaSe
-                    null,                                    // 8. areaAr
-                    node.path("도로명주소").asText(),          // 9. rdnmadr
-                    null,                                    // 10. lnmadr (지오코딩 보정 대상)
-                    "송파구청",                               // 11. instNm
-                    null,                                    // 12. latitude (지오코딩 보정 대상)
-                    null,                                    // 13. longitude (지오코딩 보정 대상)
-                    null,                                     // 14. fcltyKnd (이미지 경로 - 데이터 없음)
-                    node.path("데이터기준일자").asText()       // 15. refDate
-            ));
+            Map<String, String> rawMap = new HashMap<>();
+
+            rawMap.put(SmokingAreaItem.KEY_ID, String.valueOf(node.path("연번").asInt()));
+            rawMap.put(SmokingAreaItem.KEY_AREA_NM, node.path("건물명").asText());
+            rawMap.put(SmokingAreaItem.KEY_AREA_DESC, node.path("건물명").asText());
+            rawMap.put(SmokingAreaItem.KEY_CTPRVNNM, "서울특별시");
+            rawMap.put(SmokingAreaItem.KEY_SIGNGUNM, "송파구");
+            rawMap.put(SmokingAreaItem.KEY_AREA_SE, node.path("구분").asText());
+            rawMap.put(SmokingAreaItem.KEY_RDNMADR, node.path("도로명주소").asText());
+            rawMap.put(SmokingAreaItem.KEY_INST_NM, "송파구청");
+            rawMap.put(SmokingAreaItem.KEY_REF_DATE, node.path("데이터기준일자").asText());
+
+            items.add(new SmokingAreaItem(rawMap));
         }
 
         PublicDataMeta meta = new PublicDataMeta(

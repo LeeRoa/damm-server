@@ -1,7 +1,6 @@
 package com.damm.server.infra.publicdata.domain;
 
 import com.damm.server.infra.publicdata.PublicDataClient;
-import com.damm.server.infra.publicdata.domain.enums.ParserType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,7 +10,7 @@ public interface PublicDataParser {
     /**
      * 해당 파서가 지원하는 타입인지 확인합니다.
      */
-    boolean isSupport(ParserType parserType);
+    boolean isSupport(String cityDistrict);
 
     URI createUri(String baseUrl, String apiKey, int pageNo, int numOfRows);
 

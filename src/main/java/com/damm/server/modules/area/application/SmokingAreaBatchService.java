@@ -101,7 +101,7 @@ public class SmokingAreaBatchService {
                     try {
                         return smokingAreaMapper.toEntity(item);
                     } catch (Exception e) {
-                        log.error("엔티티 변환 중 오류가 발생했습니다. (ID: {}): {}", item.id(), e.getMessage());
+                        log.error("엔티티 변환 중 오류가 발생했습니다. (ID: {}): {}", item.get(SmokingAreaItem.KEY_ID), e.getMessage());
                         return null;
                     }
                 })
