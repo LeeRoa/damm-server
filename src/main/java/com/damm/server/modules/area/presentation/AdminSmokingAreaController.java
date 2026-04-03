@@ -22,4 +22,9 @@ public class AdminSmokingAreaController {
         batchService.syncAllApiSources();
         return ApiResponse.success();
     }
+
+    @PostMapping("/sync-retry")
+    public ApiResponse<String> syncAddressRetry() {
+        return ApiResponse.success(batchService.processPendingAddresses() + "건의 주소를 보정했습니다.");
+    }
 }

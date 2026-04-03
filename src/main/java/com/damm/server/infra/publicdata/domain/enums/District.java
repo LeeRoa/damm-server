@@ -9,13 +9,32 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public enum District {
-    // 서울특별시 자식 구역들
-    SONGPA(Province.SEOUL, "송파구"),
-    SEODAEMUN(Province.SEOUL, "서대문구"),
-    JUNGNANG(Province.SEOUL, "중랑구"),
+    // 서울특별시
+    JONGNO(Province.SEOUL, "종로구"),
+    JUNG(Province.SEOUL, "중구"),
+    YONGSAN(Province.SEOUL, "용산구"),
+    SEONGDONG(Province.SEOUL, "성동구"),
     GWANGJIN(Province.SEOUL, "광진구"),
-    EUNPYEONG(Province.SEOUL, "은평구");
-    // 필요한 지역은 여기에 계속 추가
+    DONGDAEMUN(Province.SEOUL, "동대문구"),
+    JUNGNANG(Province.SEOUL, "중랑구"),
+    SEONGBUK(Province.SEOUL, "성북구"),
+    GANGBUK(Province.SEOUL, "강북구"),
+    DOBONG(Province.SEOUL, "도봉구"),
+    NOWON(Province.SEOUL, "노원구"),
+    EUNPYEONG(Province.SEOUL, "은평구"),
+    SEODAEMUN(Province.SEOUL, "서대문구"),
+    MAPO(Province.SEOUL, "마포구"),
+    YANGCHEON(Province.SEOUL, "양천구"),
+    GANGSEO(Province.SEOUL, "강서구"),
+    GURO(Province.SEOUL, "구로구"),
+    GEUMCHEON(Province.SEOUL, "금천구"),
+    YEONGDEUNGPO(Province.SEOUL, "영등포구"),
+    DONGJAK(Province.SEOUL, "동작구"),
+    GWANAK(Province.SEOUL, "관악구"),
+    SEOCHO(Province.SEOUL, "서초구"),
+    GANGNAM(Province.SEOUL, "강남구"),
+    SONGPA(Province.SEOUL, "송파구"),
+    GANGDONG(Province.SEOUL, "강동구");
 
     private final Province province;
     private final String koreanName;

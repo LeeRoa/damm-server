@@ -4,6 +4,10 @@ import com.damm.server.infra.publicdata.PublicDataClient;
 import com.damm.server.infra.publicdata.domain.ApiSource;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
 import com.damm.server.modules.area.domain.ApiSourceRepository;
+import com.damm.server.modules.area.domain.SmokingArea;
+import com.damm.server.modules.area.domain.SmokingAreaRepository;
+import com.damm.server.modules.area.domain.enums.AddressStatus;
+import com.damm.server.modules.area.domain.enums.AreaStatus;
 import com.damm.server.modules.area.mapper.SmokingAreaMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +24,7 @@ import java.util.Objects;
 @Slf4j
 public class SmokingAreaBatchService {
 
+    private final SmokingAreaRepository smokingAreaRepository;
     private final ApiSourceRepository apiSourceRepository;
     private final PublicDataClient publicDataClient;
     private final SmokingAreaWriter areaWriter;
@@ -114,5 +119,33 @@ public class SmokingAreaBatchService {
                         log.error("데이터 저장 중 예외가 발생했습니다. (ID: {}): {}", area.getId(), e.getMessage());
                     }
                 });
+    }
+
+    /**
+     * PENDING 또는 FAIL 상태인 데이터를 찾아 지오코딩 재시도
+     */
+    @Scheduled(cron = "${public-data.retry.schedule.cron}")
+    @Transactional
+    public int processPendingAddresses() {
+        // 1. 보정이 필요한 상태들 조회
+        List<AddressStatus> targets = List.of(AddressStatus.PENDING, AddressStatus.FAIL);
+        List<SmokingArea> pendingAreas = smokingAreaRepository.findByAddressStatusInAndStatusNot(targets, AreaStatus.CLOSED);
+
+        int successCount = 0;
+        log.info("[Batch] 주소 보정 시작 대상 건수: {}건", pendingAreas.size());
+
+        for (SmokingArea area : pendingAreas) {
+            try {
+                areaWriter.saveOrUpdate(area);
+                successCount++;
+                Thread.sleep(100);
+            } catch (Exception e) {
+                log.error("[Batch] 보정 실패 - ID: {}, 사유: {}", area.getId(), e.getMessage());
+            }
+        }
+
+        log.info("[Batch] 주소 보정 프로세스 완료");
+
+        return successCount;
     }
 }
