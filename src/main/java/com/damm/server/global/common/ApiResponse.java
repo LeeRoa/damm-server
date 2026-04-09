@@ -34,4 +34,11 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> error(ErrorCode errorCode) {
         return new ApiResponse<>(false, null, errorCode.getMessage(), errorCode.getCode());
     }
+
+    /**
+     * 유효성 검사 실패 등 동적인 에러 메시지가 필요할 때 사용하는 메서드
+     */
+    public static <T> ApiResponse<T> error(ErrorCode errorCode, String customMessage) {
+        return new ApiResponse<>(false, null, customMessage, errorCode.getCode());
+    }
 }
