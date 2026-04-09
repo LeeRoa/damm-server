@@ -1,11 +1,11 @@
-package com.damm.server.modules.area.application;
+package com.damm.server.modules.area.service;
 
 import com.damm.server.infra.publicdata.PublicDataClient;
 import com.damm.server.infra.publicdata.domain.ApiSource;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
-import com.damm.server.modules.area.domain.ApiSourceRepository;
+import com.damm.server.modules.area.repository.ApiSourceRepository;
 import com.damm.server.modules.area.domain.SmokingArea;
-import com.damm.server.modules.area.domain.SmokingAreaRepository;
+import com.damm.server.modules.area.repository.SmokingAreaRepository;
 import com.damm.server.modules.area.domain.enums.AddressStatus;
 import com.damm.server.modules.area.domain.enums.AreaStatus;
 import com.damm.server.modules.area.mapper.SmokingAreaMapper;

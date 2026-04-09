@@ -1,4 +1,4 @@
-package com.damm.server.modules.area.domain;
+package com.damm.server.modules.area.repository;
 
 import com.damm.server.infra.publicdata.domain.ApiSource;
 import org.springframework.data.jpa.repository.JpaRepository;

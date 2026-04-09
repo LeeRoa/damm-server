@@ -1,8 +1,8 @@
-package com.damm.server.modules.area.application;
+package com.damm.server.modules.area.service;
 
 import com.damm.server.infra.kakao.KakaoGeocodingClient;
 import com.damm.server.modules.area.domain.SmokingArea;
-import com.damm.server.modules.area.domain.SmokingAreaRepository;
+import com.damm.server.modules.area.repository.SmokingAreaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

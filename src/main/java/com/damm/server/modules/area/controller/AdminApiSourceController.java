@@ -1,7 +1,7 @@
-package com.damm.server.modules.area.presentation;
+package com.damm.server.modules.area.controller;
 
 import com.damm.server.global.common.ApiResponse;
-import com.damm.server.modules.area.application.AdminApiSourceService;
+import com.damm.server.modules.area.service.AdminApiSourceService;
 import com.damm.server.modules.area.dto.ApiSourceRegisterRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

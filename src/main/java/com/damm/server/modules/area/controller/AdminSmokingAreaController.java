@@ -1,7 +1,7 @@
-package com.damm.server.modules.area.presentation;
+package com.damm.server.modules.area.controller;
 
 import com.damm.server.global.common.ApiResponse;
-import com.damm.server.modules.area.application.SmokingAreaBatchService;
+import com.damm.server.modules.area.service.SmokingAreaBatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

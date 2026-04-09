@@ -1,7 +1,7 @@
-package com.damm.server.modules.area.application;
+package com.damm.server.modules.area.service;
 
 import com.damm.server.infra.publicdata.domain.ApiSource;
-import com.damm.server.modules.area.domain.ApiSourceRepository;
+import com.damm.server.modules.area.repository.ApiSourceRepository;
 import com.damm.server.modules.area.dto.ApiSourceRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
