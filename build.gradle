@@ -36,6 +36,10 @@ dependencies {
     // [Database & Persistence]
     // ORM을 위한 Spring Data JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // MyBatis를 이용한 SQL 매핑과 데이터 액세스 지원
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1'
+
     // PostgreSQL 데이터베이스 드라이버
     runtimeOnly 'org.postgresql:postgresql'
 

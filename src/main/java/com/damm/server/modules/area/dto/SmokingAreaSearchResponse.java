@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 @Schema(description = "근접 흡연구역 조회 응답 정보")
-public record NearbySmokingAreaResponse(
+public record SmokingAreaSearchResponse(
         @Schema(description = "시스템 내부 고유 PK", example = "268")
         Long internalId,
 
@@ -38,20 +38,4 @@ public record NearbySmokingAreaResponse(
 
         @Schema(description = "운영 상태 (VERIFIED: 검증됨, CLOSED: 폐쇄 등)", example = "VERIFIED")
         String status
-) {
-    public static NearbySmokingAreaResponse from(SmokingAreaDistanceProjection projection) {
-        return NearbySmokingAreaResponse.builder()
-                .internalId(projection.getInternalId())
-                .id(projection.getId())
-                .name(projection.getAreaNm())
-                .description(projection.getAreaDesc())
-                .address(projection.getRawAddress())
-                .type(projection.getAreaSe())
-                .latitude(projection.getLatitude())
-                .longitude(projection.getLongitude())
-                .distanceMeter((int) Math.round(projection.getDistance()))
-                .imageUrl(projection.getFcltyKnd())
-                .status(projection.getStatus())
-                .build();
-    }
-}
+) {}

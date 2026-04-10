@@ -1,7 +1,8 @@
 package com.damm.server.modules.area.controller;
 
 import com.damm.server.modules.area.dto.NearbySmokingAreaRequest;
-import com.damm.server.modules.area.dto.NearbySmokingAreaResponse;
+import com.damm.server.modules.area.dto.SmokingAreaSearchResponse;
+import com.damm.server.modules.area.dto.SmokingAreaSearchRequest;
 import com.damm.server.modules.area.service.SmokingAreaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -42,13 +43,17 @@ public class SmokingAreaController {
             )
     })
     @GetMapping("/nearby")
-    public List<NearbySmokingAreaResponse> getNearby(
+    public List<SmokingAreaSearchResponse> getNearby(
             @Valid @ParameterObject NearbySmokingAreaRequest request
     ) {
-        return smokingAreaService.getNearbySmokingAreas(
-                request.lat(),
-                request.lng(),
-                request.getRadiusWithDefault()
-        );
+        return smokingAreaService.getNearbyAreas(request);
+    }
+
+    @Operation(summary = "통합 키워드 검색", description = "이름이나 주소로 흡연구역을 검색합니다. (전국 대상)")
+    @GetMapping("/search")
+    public List<SmokingAreaSearchResponse> search(
+            @Valid @ParameterObject SmokingAreaSearchRequest request
+    ) {
+        return smokingAreaService.searchAreas(request);
     }
 }

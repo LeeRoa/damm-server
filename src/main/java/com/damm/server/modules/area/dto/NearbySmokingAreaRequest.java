@@ -22,10 +22,8 @@ public record NearbySmokingAreaRequest(
         @Schema(description = "검색 반경 (단위: 미터, 최대 5km)", example = "1000")
         @Min(value = 1, message = "반경은 최소 1m 이상이어야 합니다.")
         @Max(value = 5000, message = "반경은 최대 5000m(5km)를 넘을 수 없습니다.")
-        Double radius
-) {
-    // 기본값 설정을 위한 커스텀 생성자 또는 getter 활용 가능
-    public Double getRadiusWithDefault() {
-        return radius == null ? 1000.0 : radius;
-    }
-}
+        Double radius,
+
+        String type,
+        String status
+) {}
