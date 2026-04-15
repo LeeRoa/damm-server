@@ -7,6 +7,7 @@ import com.damm.server.modules.area.domain.enums.AreaStatus;
 import com.damm.server.modules.area.domain.enums.AreaType;
 import com.damm.server.modules.area.domain.vo.Address;
 import com.damm.server.modules.area.domain.vo.Coordinate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -90,6 +91,7 @@ public class SmokingArea extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private AddressStatus addressStatus;
 
+    @JsonIgnore
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point location;
 
@@ -131,6 +133,7 @@ public class SmokingArea extends BaseTimeEntity {
         this.instNm = newArea.getInstNm();
         this.fcltyKnd = newArea.getFcltyKnd();
         this.refDate = newArea.getRefDate();
+        this.location = newArea.getLocation();
     }
 
     /**
@@ -156,5 +159,15 @@ public class SmokingArea extends BaseTimeEntity {
     // [업데이트 로직] 지오코딩 실패 시 호출
     public void updateGeocodingFail() {
         this.addressStatus = AddressStatus.FAIL;
+    }
+
+    public void approveByAdmin(String areaNm, String rawAddress, AreaType areaSe, AreaStatus status) {
+        this.areaNm = areaNm;
+        this.areaSe = areaSe;
+        this.status = status;
+
+        if (this.address != null) {
+            this.address.updateRawAddress(rawAddress);
+        }
     }
 }

@@ -76,4 +76,8 @@ public class Address {
                 this.getDistrict(),
                 this.getRdnmadr());
     }
+
+    public void updateRawAddress(String rawAddress) {
+        this.rawAddress = rawAddress;
+    }
 }

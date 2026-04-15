@@ -14,6 +14,9 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * 흡연구역 관련 데이터를 엔티티로 변환하는 매퍼 클래스
  * 공공데이터 API 응답 데이터와 사용자 제보 DTO를 도메인 모델(SmokingArea)로 매핑한다.
@@ -88,6 +91,7 @@ public class SmokingAreaMapper {
                 .status(AreaStatus.PENDING) // 제보 상태 고정
                 .fcltyKnd(request.imageUrl())
                 .location(location)
+                .refDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
     }
 

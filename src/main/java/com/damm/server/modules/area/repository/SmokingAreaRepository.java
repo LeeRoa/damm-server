@@ -14,4 +14,6 @@ public interface SmokingAreaRepository extends JpaRepository<SmokingArea, Long> 
     Optional<SmokingArea> findById(String id);
 
     List<SmokingArea> findByAddressStatusInAndStatusNot(Collection<AddressStatus> addressStatuses, AreaStatus status);
+
+    List<SmokingArea> findByStatus(AreaStatus areaStatus);
 }

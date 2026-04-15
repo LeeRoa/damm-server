@@ -25,6 +25,12 @@ public class SmokingAreaWriter {
         // 데이터 통일성을 위해 지오코딩을 수행한다.
         compensateCoordinate(newArea);
 
+        // 사용자 제보건(id가 없음)은 무조건 신규 저장
+        if (newArea.getId() == null || newArea.getId().isBlank()) {
+            smokingAreaRepository.save(newArea);
+            return;
+        }
+
         // 기존 데이터 존재 여부에 따라 저장 또는 수정을 진행한다.
         smokingAreaRepository.findById(newArea.getId())
                 .ifPresentOrElse(

@@ -60,4 +60,16 @@
         internal_id DESC
     </select>
 
+    <select id="getAreasInBoundingBox" resultType="com.damm.server.modules.area.dto.SmokingAreaPinResponse">
+        SELECT
+            id,
+            latitude,
+            longitude,
+            area_se AS areaType
+        FROM smoking_areas
+        WHERE status = 'VERIFIED'
+        <![CDATA[
+          AND location && ST_MakeEnvelope(#{swLng}, #{swLat}, #{neLng}, #{neLat}, 4326)
+        ]]>
+    </select>
 </mapper>
