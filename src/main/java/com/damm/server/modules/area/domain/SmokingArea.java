@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 /**
  * 흡연구역 도메인 엔티티.
@@ -89,13 +90,16 @@ public class SmokingArea extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private AddressStatus addressStatus;
 
+    @Column(columnDefinition = "geometry(Point, 4326)")
+    private Point location;
+
     /**
      * 엔티티 생성을 위한 빌더.
      * id는 영속성 컨텍스트가 관리하므로 빌더에서 제외한다.
      */
     @Builder
     public SmokingArea(String id, String areaNm, String areaDesc, Coordinate coordinate,
-                       Address address, AreaType areaSe, AreaStatus status, Double areaAr,
+                       Address address, AreaType areaSe, Point location, AreaStatus status, Double areaAr,
                        String fcltyKnd, String instNm, String refDate) {
         this.id = id;
         this.areaNm = areaNm;
@@ -108,6 +112,7 @@ public class SmokingArea extends BaseTimeEntity {
         this.fcltyKnd = fcltyKnd;
         this.instNm = instNm;
         this.refDate = refDate;
+        this.location = location;
     }
 
     /**
