@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admin/api-sources")
-@Tag(name = "00. 어드민 - 데이터 소스 관리", description = "공공데이터 API 출처(Endpoint, 지역 타입 등)를 등록하고 관리하는 API입니다.")
+@Tag(name = "01. 어드민 - 데이터 소스 관리", description = "공공데이터 API 출처(Endpoint, 지역 타입 등)를 등록하고 관리하는 API입니다.")
 public class AdminApiSourceController {
 
     private final AdminApiSourceService adminApiSourceService;
