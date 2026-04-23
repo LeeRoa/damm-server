@@ -1,6 +1,6 @@
 package com.damm.server.modules.area.mapper;
 
-import com.damm.server.global.util.AddressUtils;
+import com.damm.server.global.util.AddressUtil;
 import com.damm.server.infra.publicdata.dto.SmokingAreaItem;
 import com.damm.server.modules.area.domain.SmokingArea;
 import com.damm.server.modules.area.domain.enums.AreaStatus;
@@ -42,7 +42,7 @@ public class SmokingAreaMapper {
         Point location = geometryFactory.createPoint(new org.locationtech.jts.geom.Coordinate(lng, lat));
 
         Address addressVo = Address.builder()
-                .rawAddress(AddressUtils.refineForGeocoding(item.getAssembledAddress()))
+                .rawAddress(AddressUtil.refineForGeocoding(item.getAssembledAddress()))
                 .build();
 
         return SmokingArea.builder()

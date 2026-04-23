@@ -3,7 +3,7 @@ package com.damm.server.global.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressUtils {
+public class AddressUtil {
 
     /**
      * 주소 문자열을 지오코딩 검색에 최적화된 형태로 정제한다.

@@ -2,7 +2,7 @@ package com.damm.server.infra.storage.controller;
 
 import com.damm.server.global.common.ApiResponse;
 import com.damm.server.infra.storage.ImageStorageService;
-import com.damm.server.infra.storage.domain.ImageType;
+import com.damm.server.infra.storage.domain.StorageDomain;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class CommonImageController {
     )
     @PostMapping(value = "/{type}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<String> uploadImage(
-            @PathVariable ImageType type,
+            @PathVariable StorageDomain type,
             @RequestPart("file") MultipartFile file) {
         return ApiResponse.success(imageStorageService.upload(file, type));
     }

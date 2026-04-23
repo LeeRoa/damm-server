@@ -1,7 +1,9 @@
 package com.damm.server.infra.storage.local;
 
 import com.damm.server.infra.storage.ImageStorageService;
-import com.damm.server.infra.storage.domain.ImageType;
+import com.damm.server.infra.storage.domain.StorageDomain;
+import com.damm.server.infra.storage.validator.FileValidator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @Primary
+@RequiredArgsConstructor
 public class LocalImageStorageService implements ImageStorageService {
 
     @Value("${file.upload-dir}")
@@ -27,18 +30,22 @@ public class LocalImageStorageService implements ImageStorageService {
     @Value("${file.access-path}")
     private String accessPath;
 
+    private final FileValidator fileValidator;
+
     @Override
-    public String upload(MultipartFile file, ImageType type) {
+    public String upload(MultipartFile file, StorageDomain domain) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("업로드할 파일이 비어있습니다.");
         }
 
         try {
-            Path uploadPath = Paths.get(uploadDir, type.name()).toAbsolutePath().normalize();
+            Path uploadPath = Paths.get(uploadDir, domain.name()).toAbsolutePath().normalize();
 
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+
+            fileValidator.validate(file, domain.getFileCategory());
 
             // 파일명 생성
             String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -50,7 +57,7 @@ public class LocalImageStorageService implements ImageStorageService {
             file.transferTo(targetLocation.toFile());
 
             // 반환 예시 URL: /uploads/AREA/uuid.jpg
-            return accessPath + type.name() + "/" + savedFilename;
+            return accessPath + domain.name() + "/" + savedFilename;
 
         } catch (IOException e) {
             log.error("파일 저장 중 오류 발생", e);
